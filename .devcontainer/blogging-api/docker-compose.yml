@@ -1,0 +1,25 @@
+services:
+  mysql:
+    image: mysql
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: blogs
+      container_name: trysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+   
+  app:
+    
+    container_name: blogg
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+volumes:
+    mysql-data:
