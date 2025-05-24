@@ -1,0 +1,65 @@
+services:
+
+  # postgres:
+  #   image: postgres
+  #   expose:
+  #     - "5432"
+  #   environment:
+  #     POSTGRES_PASSWORD: admin
+  #   volum
+  #     - mypsql-data:/dev/shm
+  #     - ./schema:/docker-entrypoint-initdb.d
+  #   restart: always
+  
+  # mongodb:
+  #   container_name: mongodb
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017"
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: password
+  #   volumes:
+  #     - mypsql-data:/data/db
+
+  # mysql:
+  #   image: mysql:latest
+  #   container_name: mysql-container
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: admin
+  #     MYSQL_DATABASE: admin
+  #     MYSQL_USER: admin
+  #     MYSQL_PASSWORD: admin
+  #   ports:
+  #     - "3306"
+  #   volumes:
+  #     - mypsql-data:/data/db
+  # mariadb:
+  #   image: mariadb:latest
+  #   container_name: mariadb
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: admin
+  #     MYSQL_DATABASE: admin
+  #     MYSQL_USER: admin
+  #     MYSQL_PASSWORD: admin
+  #   ports:
+  #     - "3306"
+  #   volumes:
+  #     - mypsql-data:/data/db
+  #   restart: always
+  
+  app:
+    stdin_open: true
+    tty: true
+    container_name: db-backup
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - data:/data
+
+    
+
+volumes:
+  mypsql-data:
+  data:

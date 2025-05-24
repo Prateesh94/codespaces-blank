@@ -73,7 +73,7 @@ var token string
 var tok []string
 
 func requrl(a, b string, c []byte, f map[string]string) *http.Request {
-	r := httptest.NewRequest(a, "/todos/{id}", bytes.NewBuffer(c))
+	r := httptest.NewRequest(a, b, bytes.NewBuffer(c))
 	return mux.SetURLVars(r, f)
 }
 func TestRegister(t *testing.T) {
