@@ -9,9 +9,10 @@ This utility tool provides the user to make backup and restore of supported data
 
 
 ### Installing
-<pre>
+
 db-backup comes pre installed in the docker container, you will be able to use db-backup command as soon as you run docker exec -it db-backup sh
 ## Usage
+<pre>
   db-backup [command]  
 
 Available Commands:
