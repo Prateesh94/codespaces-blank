@@ -9,9 +9,10 @@ This utility tool provides the user to make backup and restore of supported data
 
 
 ### Installing
+<pre>
 db-backup comes pre installed in the docker container, you will be able to use db-backup command as soon as you run docker exec -it db-backup sh
 ## Usage
-  db-backup [command]
+  db-backup [command]  
 
 Available Commands:
   backup      backup is a command to backup databases
@@ -40,5 +41,6 @@ Usage:
 Flags:
   -d, --dbms string   DBMS name
   -h, --help          help for restore
+</pre>
 ## License
 This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2, see the LICENSE file for details.
