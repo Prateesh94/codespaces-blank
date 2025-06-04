@@ -8,19 +8,25 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"sync"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 	"github.com/spf13/cobra"
 )
 
+var mu sync.RWMutex
 var upgrader = websocket.Upgrader{
+
 	CheckOrigin: func(r *http.Request) bool {
+
 		return true
 	},
 }
 var clients = make(map[*websocket.Conn]bool)
 var broadcast = make(chan []byte)
+var i int = 0
+var count int = 0
 
 func handleconnection(w http.ResponseWriter, r *http.Request) {
 	ws, er := upgrader.Upgrade(w, r, nil)
@@ -29,27 +35,41 @@ func handleconnection(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer ws.Close()
+	mu.Lock()
 	clients[ws] = true
-	fmt.Println("client connected")
+	count++
+	i++
+	mu.Unlock()
+	fmt.Printf("A client has connected, Total Clients connected:- %d\n", i)
 	for {
+
 		_, msg, err := ws.ReadMessage()
+
 		if err != nil {
+			mu.Lock()
 			delete(clients, ws)
-			fmt.Println("Client disconnected")
+			i--
+			mu.Unlock()
+			fmt.Printf("A client has disconnected, Total Clients left:-  %d\n", i)
+			fmt.Printf("Total Clients served: %d\n", count)
 			break
 		}
 		broadcast <- msg
+
 	}
 }
 func handleMessages() {
 	for {
+
 		msg := <-broadcast
+		mu.RLock()
 		for client := range clients {
 			if err := client.WriteMessage(websocket.TextMessage, msg); err != nil {
 				client.Close()
 				delete(clients, client)
 			}
 		}
+		mu.RUnlock()
 	}
 }
 
